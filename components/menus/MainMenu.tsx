@@ -1,30 +1,33 @@
 // Bottom menu with icons etc.
-import { BottomNavigation, BottomNavigationAction } from "@mui/material";
-import RestoreIcon from "@mui/icons-material/Restore";
+import {
+  BottomNavigation,
+  BottomNavigationAction,
+  useTheme,
+} from "@mui/material";
+import HomeIcon from "@mui/icons-material/Home";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import React, { useState } from "react";
 import { NextLinkComposed } from "./Link";
 import styled from "@emotion/styled";
 
-const StyledBottomNav = styled(BottomNavigation)`
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-`;
-
 const MainMenu: React.FC = () => {
   const [menuIndex, setMenuIndex] = useState(0);
 
-  console.log({ menuIndex: menuIndex });
+  const theme = useTheme();
+  const StyledBottomNav = styled(BottomNavigation)`
+    position: fixed;
+    background: ${theme.palette.secondary.main};
+    bottom: 0;
+    left: 0;
+    width: 100%;
+  `;
 
   return (
     <StyledBottomNav
       showLabels
       value={menuIndex}
       onChange={(event, newValue) => {
-        console.log({ newValue });
         setMenuIndex(newValue);
       }}
     >
@@ -32,7 +35,7 @@ const MainMenu: React.FC = () => {
         component={NextLinkComposed}
         to={{ pathname: "/" }}
         label="Accueil"
-        icon={<RestoreIcon />}
+        icon={<HomeIcon />}
       />
       <BottomNavigationAction
         component={NextLinkComposed}

@@ -1,7 +1,7 @@
 import React from "react";
 import { GetStaticProps, NextPage } from "next";
-import { Grid, Typography } from "@mui/material";
-import StartTraining from "../components/buttons/StartTraining";
+import { Card, Grid, Typography, Button, Chip, Box } from "@mui/material";
+import { Timer } from "@mui/icons-material";
 
 export const getStaticProps: GetStaticProps = async () => {
   const feed = [
@@ -27,19 +27,36 @@ type Props = {};
 
 const Index: NextPage = (props: Props) => {
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12}>
-        <StartTraining />
+    <>
+      <Grid container justifyContent="center">
+        <Button variant="contained" endIcon={<Timer />}>
+          M'entrainer
+        </Button>
       </Grid>
 
       <Grid item xs={12}>
-        <Typography variant="h2">Vos derniers entrainements</Typography>
+        <Typography variant="h2">Entrainements</Typography>
+        <Card>
+          <Grid container justifyContent="space-between">
+            <Typography variant="h3">Pecs abdos</Typography>
+            <Typography variant="body2">il y a 6 jours</Typography>
+          </Grid>
+          <Box sx={{ margin: ".75rem 0" }}></Box>
+          <Chip label="5 exercices" />
+        </Card>
       </Grid>
+      <Box sx={{ margin: "2rem 0" }}></Box>
 
-      <Grid item xs={12}>
-        List
+      <Grid item textAlign="center">
+        <Typography
+          variant="body1"
+          sx={{ fontStyle: "italic", fontSize: "18px", marginBottom: "-8px" }}
+        >
+          Vous n’avez pas de compte ?
+        </Typography>
+        <Button variant="text">Créer un compte</Button>
       </Grid>
-    </Grid>
+    </>
   );
 };
 

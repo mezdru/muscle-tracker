@@ -18,7 +18,6 @@ interface CustomDocumentProps extends DocumentProps {
 }
 
 export default function MyDocument({ emotionStyleTags }: CustomDocumentProps) {
-  console.log("Running _document page");
   return (
     <Html lang="en">
       <Head>{emotionStyleTags}</Head>

@@ -1,16 +1,5 @@
-// Bottom menu with icons etc.
-import {
-  Avatar,
-  BottomNavigation,
-  BottomNavigationAction,
-  Grid,
-  Typography,
-} from "@mui/material";
-import RestoreIcon from "@mui/icons-material/Restore";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
-import React, { useState } from "react";
-import { NextLinkComposed } from "./Link";
+import React from "react";
+import { Avatar, Grid, Typography } from "@mui/material";
 import styled from "@emotion/styled";
 
 const StyledNavBar = styled("div")`
@@ -23,14 +12,14 @@ const StyledNavBar = styled("div")`
 const AppBar: React.FC = () => {
   return (
     <StyledNavBar>
-      <Grid container justifyContent="space-between">
+      <Grid container justifyContent="space-between" alignItems="center">
         <Grid item>
-          <Typography variant="h1" color="secondary">
-            Bonjour
+          <Typography variant="h1" color="primary.light">
+            Muscle Tracker
           </Typography>
         </Grid>
         <Grid item>
-          <Avatar sx={{ width: 45, height: 45 }} />
+          <Avatar sx={{ width: 32, height: 32 }} />
         </Grid>
       </Grid>
     </StyledNavBar>
