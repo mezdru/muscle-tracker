@@ -1,13 +1,13 @@
 // schema.prisma
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["jsonProtocol"]
 }
 
 datasource db {
   provider = "postgresql"
-  url = env("DATABASE_URL") // uses a direct connection
+  url      = env("DATABASE_URL") // uses a direct connection
 }
 
 model Account {
@@ -26,27 +26,33 @@ model Account {
   oauth_token_secret String?
   oauth_token        String?
 
-  user User @relation(fields:[userId], references:[id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
 
 model Session {
   id           String   @id @default(cuid())
-  sessionToken String   @unique@map("session_token")
+  sessionToken String   @unique @map("session_token")
   userId       String   @map("user_id")
   expires      DateTime
-  user         User     @relation(fields:[userId], references:[id], onDelete: Cascade)
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?@unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
+  id             String          @id @default(cuid())
+  name           String?
+  email          String?         @unique
+  emailVerified  DateTime?
+  image          String?
+  accounts       Account[]
+  sessions       Session[]
+  trainingModels TrainingModel[]
+  trainings      Training[]
+  exerciseModels ExerciseModel[]
+  exercises      Exercise[]
+  serieModels    SerieModel[]
+  series         Serie[]
 }
 
 model VerificationToken {
@@ -56,4 +62,80 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model TrainingModel {
+  id            String          @id @default(cuid())
+  name          String
+  isPublic      Boolean         @default(false)
+  createdAt     DateTime        @default(now())
+  userId        String          @map("user_id")
+  user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  trainings      Training[]
+  exerciseModels ExerciseModel[]
+}
+
+model Training {
+  id              String        @id @default(cuid())
+  trainingModelId String        @map("trainingModel_id")
+  trainingModel   TrainingModel @relation(fields: [trainingModelId], references: [id])
+  exercises       Exercise[]
+  startedAt       DateTime
+  endedAt         DateTime
+  createdAt       DateTime      @default(now())
+  userId          String        @map("user_id")
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ExerciseModel {
+  id              String         @id @default(cuid())
+  name            String
+  isPublic        Boolean        @default(false)
+  trainingModelId String?        @map("trainingModel_id")
+  trainingModel   TrainingModel? @relation(fields: [trainingModelId], references: [id])
+  serieModels     SerieModel[]
+  createdAt       DateTime       @default(now())
+  userId          String         @map("user_id")
+  user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  exercises       Exercise[]
+}
+
+model Exercise {
+  id              String         @id @default(cuid())
+  exerciseModelId String?        @map("exerciseModel_id")
+  exerciseModel   ExerciseModel? @relation(fields: [exerciseModelId], references: [id])
+  trainingId      String         @map("training_id")
+  training        Training       @relation(fields: [trainingId], references: [id])
+  series          Serie[]
+  notes           String
+  startedAt       DateTime
+  endedAt         DateTime
+  createdAt       DateTime       @default(now())
+  userId          String         @map("user_id")
+  user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model SerieModel {
+  id              String         @id @default(cuid())
+  exerciseModelId String?        @map("exerciseModel_id")
+  exerciseModel   ExerciseModel? @relation(fields: [exerciseModelId], references: [id])
+  weight          Float
+  repetitions     Int
+  createdAt       DateTime       @default(now())
+  userId          String         @map("user_id")
+  user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  series          Serie[]
+}
+
+model Serie {
+  id           String     @id @default(cuid())
+  serieModelId String     @map("serieModel_id")
+  serieModel   SerieModel @relation(fields: [serieModelId], references: [id])
+  exerciseId   String     @map("exercise_id")
+  exercise     Exercise   @relation(fields: [exerciseId], references: [id])
+  weight       Float
+  repetitions  Int
+  createdAt    DateTime   @default(now())
+  userId       String     @map("user_id")
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
