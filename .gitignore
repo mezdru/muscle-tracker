@@ -87,6 +87,9 @@ web_modules/
 .next
 out
 
+# Prisma Migrations
+migrations
+
 # Nuxt.js build / generate output
 .nuxt
 dist
